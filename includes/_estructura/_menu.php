@@ -10,16 +10,37 @@
             </li>
 
             <!-- Clientes -->
-            <li>
-                <a href="#menuClientes" data-bs-toggle="collapse"
-                    class="d-flex justify-content-between align-items-center">
-                    <span><i class="fas fa-user-tie"></i> Clientes</span>
-                    <i class="fas fa-chevron-down small"></i>
+            <li class="nav-item">
+                <a href="#menuClientes" data-bs-toggle="collapse" class="d-flex align-items-center">
+                    <i class="fas fa-users"></i>
+                    <span>Clientes</span>
+                    <i class="fas fa-chevron-down ms-auto small"></i>
                 </a>
-                <div class="collapse <?= ($_GET['view'] ?? '') === 'clientes' ? 'show' : '' ?>" id="menuClientes">
-                    <ul class="list-unstyled">
-                        <li class="<?= ($_GET['view'] ?? '') === 'clientes' ? 'active' : '' ?>">
-                            <a href="index.php?view=clientes" class="ps-5">Gestión de Clientes</a>
+                <div class="collapse <?= (isset($_GET['view']) && (strpos($_GET['view'], 'cliente') !== false)) ? 'show' : '' ?>"
+                    id="menuClientes">
+                    <ul class="nav flex-column ps-3">
+                        <li class="nav-item">
+                            <a href="index.php?view=clientes"
+                                class="nav-link <?= (isset($_GET['view']) && $_GET['view'] == 'clientes') ? 'active' : '' ?>">Gestión
+                                de Clientes</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <!-- Gestión de Servicios -->
+            <li class="nav-item">
+                <a href="#menuServicios" data-bs-toggle="collapse" class="d-flex align-items-center">
+                    <i class="fas fa-server"></i>
+                    <span>Gestión de Servicios</span>
+                    <i class="fas fa-chevron-down ms-auto small"></i>
+                </a>
+                <div class="collapse <?= (isset($_GET['view']) && (strpos($_GET['view'], 'servidor') !== false)) ? 'show' : '' ?>"
+                    id="menuServicios">
+                    <ul class="nav flex-column ps-3">
+                        <li class="nav-item">
+                            <a href="index.php?view=servidores"
+                                class="nav-link <?= (isset($_GET['view']) && $_GET['view'] == 'servidores') ? 'active' : '' ?>">Servidores</a>
                         </li>
                     </ul>
                 </div>
