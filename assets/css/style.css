@@ -133,6 +133,21 @@ body {
     animation: fadeInUp 0.5s ease-out;
 }
 
+.main-footer {
+    margin-left: var(--sidebar-width);
+    border-top: 1px solid #ebedf3;
+    background: white;
+}
+
+/* Auth Pages */
+body.logged-out {
+    background-color: var(--secondary-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
 /* Responsiveness */
 @media (max-width: 992px) {
     .sidebar {
