@@ -4,8 +4,8 @@
         <div class="col-lg-6 d-flex align-items-center justify-content-center bg-white p-5">
             <div class="login-form-wrapper w-100" style="max-width: 380px;">
                 <div class="text-center mb-5">
-                    <div class="login-logo-circle mb-4" style="width: auto; padding: 0 20px;">
-                        <span class="fw-bold text-primary">Interacto</span>
+                    <div class="login-logo-circle mb-4">
+                        <img src="assets/images/logo.png" alt="Interacto" style="height: 48px; width: auto;">
                     </div>
                     <h2 class="fw-bold">Iniciar Sesión</h2>
                 </div>

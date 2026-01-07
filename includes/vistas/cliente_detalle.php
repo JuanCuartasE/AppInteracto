@@ -6,23 +6,27 @@ if (!$client_id) {
 }
 ?>
 
-<div class="row mb-4 animate__animated animate__fadeIn">
-    <div class="col-md-8">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.php?view=clientes">Clientes</a></li>
-                <li class="breadcrumb-item active" id="breadcrumbClientName">Detalle del Cliente</li>
-            </ol>
-        </nav>
-        <h2 class="fw-bold" id="clientTitle">Cargando...</h2>
-    </div>
-    <div class="col-md-4 text-md-end">
-        <button class="btn btn-outline-primary me-2" onclick="location.reload()">
-            <i class="fas fa-sync-alt"></i>
-        </button>
-        <button class="btn btn-primary" id="btnSaveClient">
-            <i class="fas fa-save me-2"></i> Guardar Cambios
-        </button>
+<div class="page-title-section animate__animated animate__fadeIn">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-2" style="font-size: 0.8rem;">
+                    <li class="breadcrumb-item"><a href="index.php?view=clientes"
+                            class="text-decoration-none">Clientes</a></li>
+                    <li class="breadcrumb-item active" id="breadcrumbClientName">Detalle</li>
+                </ol>
+            </nav>
+            <h1 id="clientTitle">Cargando...</h1>
+        </div>
+        <div class="d-flex gap-2">
+            <button class="btn btn-outline-secondary px-3" onclick="location.reload()">
+                <i class="fas fa-sync-alt"></i>
+            </button>
+            <button class="btn btn-primary px-4 fw-bold" id="btnSaveClient"
+                style="background-color: #1a73e8; border-color: #1a73e8;">
+                <i class="fas fa-save me-2"></i> Guardar Cambios
+            </button>
+        </div>
     </div>
 </div>
 

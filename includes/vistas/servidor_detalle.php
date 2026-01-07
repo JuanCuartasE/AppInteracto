@@ -6,20 +6,27 @@ if (!$server_id) {
 }
 ?>
 
-<div class="row mb-5 animate__animated animate__fadeIn">
-    <div class="col-md-9">
-        <nav aria-label="breadcrumb" class="mb-2">
-            <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item"><a href="index.php?view=servidores">Servidores</a></li>
-                <li class="breadcrumb-item active" id="breadcrumbServerName">Detalle del Servidor</li>
-            </ol>
-        </nav>
-        <h1 class="fw-bold h2" id="serverTitle">Cargando...</h1>
-    </div>
-    <div class="col-md-3 text-md-end d-flex align-items-end justify-content-end">
-        <div class="bg-white border rounded px-3 py-2 small shadow-sm">
-            <span class="text-muted d-block small text-uppercase fw-bold">ID Servidor</span>
-            <span class="fw-bold">#<?= $server_id ?></span>
+<div class="page-title-section animate__animated animate__fadeIn">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-2" style="font-size: 0.8rem;">
+                    <li class="breadcrumb-item"><a href="index.php?view=servidores"
+                            class="text-decoration-none">Servidores</a></li>
+                    <li class="breadcrumb-item active" id="breadcrumbServerName">Detalle</li>
+                </ol>
+            </nav>
+            <h1 id="serverTitle">Cargando...</h1>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <div class="bg-white border rounded px-3 py-2 small shadow-sm">
+                <span class="text-muted d-block small text-uppercase fw-bold" style="font-size: 0.65rem;">ID
+                    Instancia</span>
+                <span class="fw-bold text-dark">#<?= $server_id ?></span>
+            </div>
+            <button class="btn btn-outline-secondary px-3" onclick="location.reload()">
+                <i class="fas fa-sync-alt"></i>
+            </button>
         </div>
     </div>
 </div>

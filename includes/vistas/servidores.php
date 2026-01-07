@@ -1,16 +1,17 @@
-<div class="row mb-4">
-    <div class="col-md-6">
-        <h2 class="fw-bold">Gestión de Servidores</h2>
-        <p class="text-muted">Administra tus VPS y servidores remotos.</p>
-    </div>
-    <div class="col-md-6 text-md-end">
-        <button class="btn btn-primary" id="btnNuevoServidor">
+<div class="page-title-section animate__animated animate__fadeIn">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h1>Gestión de Servidores</h1>
+            <p class="text-muted">Administra tus VPS y servidores remotos en una infraestructura centralizada.</p>
+        </div>
+        <button class="btn btn-primary px-4 py-2" id="btnNuevoServidor"
+            style="background-color: #1a73e8; border-color: #1a73e8;">
             <i class="fas fa-plus me-2"></i> Nuevo Servidor
         </button>
     </div>
 </div>
 
-<div class="card border-0 shadow-sm">
+<div class="card border-0 shadow-sm animate__animated animate__fadeIn mb-4">
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0 table-mobile-cards">
@@ -35,56 +36,109 @@
 <!-- Modal Servidor -->
 <div class="modal fade" id="modalServidor" tabindex="-1">
     <div class="modal-dialog modal-lg">
-        <form class="modal-content border-0" id="formServidor">
-            <div class="modal-header border-bottom-0 pt-4 px-4">
-                <h5 class="fw-bold" id="modalTitle">Datos del Servidor</h5>
+        <form class="modal-content border-0 shadow-lg" id="formServidor">
+            <div class="modal-header border-bottom-0 pt-4 px-4 bg-light">
+                <div>
+                    <h5 class="fw-bold mb-0" id="modalTitle">Nuevo Servidor</h5>
+                    <p class="text-muted small mb-0">Configura los detalles técnicos de tu nueva instancia.</p>
+                </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
                 <input type="hidden" name="id" id="servidorId">
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label small fw-bold text-muted text-uppercase">Nombre del Servidor</label>
-                        <input type="text" class="form-control" name="name" id="servidorName" required
-                            placeholder="ej. Web Server 01">
+
+                <!-- Sección 1: Identificación -->
+                <div class="form-section mb-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3"
+                            style="width: 28px; height: 28px; font-size: 0.8rem;">1</div>
+                        <h6 class="fw-bold mb-0">Detalles de Identificación</h6>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label small fw-bold text-muted text-uppercase">Propietario (Cliente)</label>
-                        <select class="form-select" name="client_id" id="servidorClientId">
-                            <option value="">-- Seleccionar Cliente --</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label small fw-bold text-muted text-uppercase">IPv4</label>
-                        <input type="text" class="form-control" name="ipv4" id="servidorIpv4" placeholder="0.0.0.0">
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label small fw-bold text-muted text-uppercase">IPv6</label>
-                        <input type="text" class="form-control" name="ipv6" id="servidorIpv6" placeholder="::1">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label small fw-bold text-muted text-uppercase">Sistema Operativo</label>
-                        <input type="text" class="form-control" name="os" id="servidorOs" placeholder="ej. Ubuntu">
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label small fw-bold text-muted text-uppercase">Versión OS</label>
-                        <input type="text" class="form-control" name="os_version" id="servidorOsVersion"
-                            placeholder="ej. 22.04 LTS">
+                    <div class="ps-5">
+                        <p class="text-muted small mb-3">Asigna un nombre descriptivo y selecciona el cliente
+                            propietario de este servidor para su correcta facturación y seguimiento.</p>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label small fw-bold text-muted text-uppercase">Nombre del
+                                    Servidor</label>
+                                <input type="text" class="form-control" name="name" id="servidorName" required
+                                    placeholder="ej. Web Server Producción 01">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label small fw-bold text-muted text-uppercase">Propietario
+                                    (Cliente)</label>
+                                <select class="form-select" name="client_id" id="servidorClientId">
+                                    <option value="">-- Seleccionar Cliente --</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label small fw-bold text-muted text-uppercase">Fecha de Creación de la
-                        VPS</label>
-                    <input type="date" class="form-control" name="created_at" id="servidorCreatedAt">
+
+                <hr class="my-4 opacity-50">
+
+                <!-- Sección 2: Red -->
+                <div class="form-section mb-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3"
+                            style="width: 28px; height: 28px; font-size: 0.8rem;">2</div>
+                        <h6 class="fw-bold mb-0">Configuración de Red</h6>
+                    </div>
+                    <div class="ps-5">
+                        <p class="text-muted small mb-3">Ingresa las direcciones IP públicas asignadas. Esto permitirá
+                            la conectividad y el monitoreo de los servicios instalados.</p>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label small fw-bold text-muted text-uppercase">Dirección IPv4</label>
+                                <input type="text" class="form-control" name="ipv4" id="servidorIpv4"
+                                    placeholder="ej. 172.67.143.12">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label small fw-bold text-muted text-uppercase">Dirección IPv6</label>
+                                <input type="text" class="form-control" name="ipv6" id="servidorIpv6"
+                                    placeholder="ej. 2606:4700:3033::ac43:8f0c">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4 opacity-50">
+
+                <!-- Sección 3: Sistema -->
+                <div class="form-section mb-2">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3"
+                            style="width: 28px; height: 28px; font-size: 0.8rem;">3</div>
+                        <h6 class="fw-bold mb-0">Sistema Operativo</h6>
+                    </div>
+                    <div class="ps-5">
+                        <p class="text-muted small mb-3">Especifica el entorno base del servidor. Esto es útil para
+                            conocer la compatibilidad del software que se instalará más tarde.</p>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label small fw-bold text-muted text-uppercase">Sistema
+                                    Operativo</label>
+                                <input type="text" class="form-control" name="os" id="servidorOs"
+                                    placeholder="ej. Ubuntu">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label small fw-bold text-muted text-uppercase">Versión OS</label>
+                                <input type="text" class="form-control" name="os_version" id="servidorOsVersion"
+                                    placeholder="ej. 24.04 LTS">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted text-uppercase">Fecha de Creación de la
+                                VPS</label>
+                            <input type="date" class="form-control" name="created_at" id="servidorCreatedAt">
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="modal-footer border-top-0 pb-4 px-4">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary px-4">Guardar Servidor</button>
+            <div class="modal-footer bg-light border-top-0 pb-4 px-4">
+                <button type="button" class="btn btn-light border" data-bs-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary px-5 fw-bold"
+                    style="background-color: #1a73e8; border-color: #1a73e8;">Siguiente</button>
             </div>
         </form>
     </div>
@@ -100,10 +154,10 @@
                 const cleanDate = dateStr.split(' ')[0];
                 const parts = cleanDate.split('-');
                 if (parts.length !== 3) return dateStr;
-                
+
                 // Construct date using components (Year, MonthIndex, Day)
                 const d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-                
+
                 if (isNaN(d.getTime())) return dateStr;
                 return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
             } catch (e) {
