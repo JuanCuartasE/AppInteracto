@@ -25,7 +25,7 @@ if (!$server_id) {
 
 <div class="row g-4">
     <!-- Información del Servidor -->
-    <div class="col-lg-4">
+    <div class="col-12">
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-header bg-white py-3">
                 <h5 class="mb-0 fw-bold">Configuración VPS</h5>
@@ -73,7 +73,7 @@ if (!$server_id) {
     </div>
 
     <!-- Software Instalado -->
-    <div class="col-lg-8">
+    <div class="col-12">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
                 <h5 class="mb-0 fw-bold">Software Instalado</h5>
