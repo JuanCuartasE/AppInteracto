@@ -24,7 +24,15 @@
 <body class="<?= isset($_SESSION['interacto_user_id']) ? 'logged-in' : 'logged-out' ?>">
 
     <?php if (isset($_SESSION['interacto_user_id'])): ?>
-        <header class="top-header d-flex justify-content-end align-items-center px-4">
+        <div class="sidebar-overlay d-lg-none"
+            style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;">
+        </div>
+        <header class="top-header d-flex justify-content-between align-items-center px-4">
+            <div class="header-left d-flex align-items-center">
+                <button id="sidebarToggle" class="btn text-white d-lg-none me-2 p-0">
+                    <i class="fas fa-bars fa-lg"></i>
+                </button>
+            </div>
             <div class="header-right d-flex align-items-center">
                 <span class="text-white me-3">Bienvenido, <strong>
                         <?= $_SESSION['interacto_user_name'] ?>
