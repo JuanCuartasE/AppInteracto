@@ -13,7 +13,7 @@
 <div class="card border-0 shadow-sm">
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
+            <table class="table table-hover align-middle mb-0 table-mobile-cards">
                 <thead class="bg-light text-muted small text-uppercase">
                     <tr>
                         <th class="px-4">Nombre</th>
@@ -110,11 +110,11 @@
                     res.data.forEach(c => {
                         html += `
                         <tr class="clickable-row" data-id="${c.id}" style="cursor:pointer">
-                            <td class="px-4 fw-medium">${c.name}</td>
-                            <td><span class="badge ${c.type === 'Empresa' ? 'bg-info' : 'bg-success'}">${c.type}</span></td>
-                            <td>${c.doc_type || '-'} ${c.doc_number || ''}</td>
-                            <td>${c.email || '-'}</td>
-                            <td>${c.phone || '-'}</td>
+                            <td class="px-4 fw-medium" data-label="Nombre">${c.name}</td>
+                            <td data-label="Tipo"><span class="badge ${c.type === 'Empresa' ? 'bg-info' : 'bg-success'}">${c.type}</span></td>
+                            <td data-label="Documento">${c.doc_type || '-'} ${c.doc_number || ''}</td>
+                            <td data-label="Email">${c.email || '-'}</td>
+                            <td data-label="Teléfono">${c.phone || '-'}</td>
                             <td class="text-end px-4">
                                 <button class="btn btn-sm btn-icon btn-light me-2 edit-client" data-client='${JSON.stringify(c)}'>
                                     <i class="fas fa-edit"></i>

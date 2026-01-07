@@ -20,7 +20,7 @@ if (!checkPermission('OWNER')) {
 <div class="card border-0 shadow-sm">
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
+            <table class="table table-hover align-middle mb-0 table-mobile-cards">
                 <thead class="bg-light text-muted small text-uppercase">
                     <tr>
                         <th class="px-4">Nombre</th>
@@ -88,10 +88,10 @@ if (!checkPermission('OWNER')) {
                     res.data.forEach(u => {
                         html += `
                         <tr>
-                            <td class="px-4 fw-medium">${u.name}</td>
-                            <td>${u.email}</td>
-                            <td><span class="badge ${u.role === 'OWNER' ? 'bg-danger' : 'bg-primary'}">${u.role}</span></td>
-                            <td><span class="badge ${u.status === 1 ? 'bg-success' : 'bg-secondary'}">${u.status === 1 ? 'Activo' : 'Inactivo'}</span></td>
+                            <td class="px-4 fw-medium" data-label="Nombre">${u.name}</td>
+                            <td data-label="Email">${u.email}</td>
+                            <td data-label="Rol"><span class="badge ${u.role === 'OWNER' ? 'bg-danger' : 'bg-primary'}">${u.role}</span></td>
+                            <td data-label="Estado"><span class="badge ${u.status === 1 ? 'bg-success' : 'bg-secondary'}">${u.status === 1 ? 'Activo' : 'Inactivo'}</span></td>
                             <td class="text-end px-4">
                                 <button class="btn btn-sm btn-icon btn-light me-2 edit-user" data-user='${JSON.stringify(u)}'>
                                     <i class="fas fa-edit"></i>

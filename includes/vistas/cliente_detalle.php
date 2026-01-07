@@ -94,7 +94,7 @@ if (!$client_id) {
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
+                    <table class="table table-hover align-middle mb-0 table-mobile-cards">
                         <thead class="bg-light text-muted small text-uppercase">
                             <tr>
                                 <th class="px-4">Nombre</th>
@@ -233,11 +233,11 @@ if (!$client_id) {
                     res.data.forEach(co => {
                         html += `
                         <tr>
-                            <td class="px-4 fw-medium">${co.salutation ? co.salutation + ' ' : ''}${co.first_name} ${co.last_name}</td>
-                            <td>${co.position || '-'}</td>
-                            <td>${co.email_1}</td>
-                            <td>${co.phone_1} ${co.whatsapp_1 == 1 ? '<i class="fab fa-whatsapp text-success ms-1"></i>' : ''}</td>
-                            <td class="text-center">${co.is_primary == 1 ? '<i class="fas fa-star text-warning"></i>' : '-'}</td>
+                            <td class="px-4 fw-medium" data-label="Nombre">${co.salutation ? co.salutation + ' ' : ''}${co.first_name} ${co.last_name}</td>
+                            <td data-label="Cargo">${co.position || '-'}</td>
+                            <td data-label="Email">${co.email_1}</td>
+                            <td data-label="Teléfono">${co.phone_1} ${co.whatsapp_1 == 1 ? '<i class="fab fa-whatsapp text-success ms-1"></i>' : ''}</td>
+                            <td class="text-center" data-label="Principal">${co.is_primary == 1 ? '<i class="fas fa-star text-warning"></i>' : '-'}</td>
                             <td class="text-end px-4">
                                 <button class="btn btn-sm btn-icon btn-light me-2 edit-contact" data-contact='${JSON.stringify(co)}'>
                                     <i class="fas fa-edit"></i>
