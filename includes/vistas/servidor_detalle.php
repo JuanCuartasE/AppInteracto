@@ -6,68 +6,63 @@ if (!$server_id) {
 }
 ?>
 
-<div class="row mb-4 animate__animated animate__fadeIn">
-    <div class="col-md-8">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
+<div class="row mb-5 animate__animated animate__fadeIn">
+    <div class="col-md-9">
+        <nav aria-label="breadcrumb" class="mb-2">
+            <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="index.php?view=servidores">Servidores</a></li>
                 <li class="breadcrumb-item active" id="breadcrumbServerName">Detalle del Servidor</li>
             </ol>
         </nav>
-        <h2 class="fw-bold" id="serverTitle">Cargando...</h2>
+        <h1 class="fw-bold h2" id="serverTitle">Cargando...</h1>
     </div>
-    <div class="col-md-4 text-md-end">
-        <button class="btn btn-primary" id="btnSaveServer">
-            <i class="fas fa-save me-2"></i> Guardar Cambios
-        </button>
+    <div class="col-md-3 text-md-end d-flex align-items-end justify-content-end">
+        <div class="bg-white border rounded px-3 py-2 small shadow-sm">
+            <span class="text-muted d-block small text-uppercase fw-bold">ID Servidor</span>
+            <span class="fw-bold">#<?= $server_id ?></span>
+        </div>
     </div>
 </div>
 
 <div class="row g-4">
-    <!-- Información del Servidor -->
+    <!-- Información del Servidor (Read Only) -->
     <div class="col-12">
-        <div class="card border-0 shadow-sm mb-4">
-            <div class="card-header bg-white py-3">
-                <h5 class="mb-0 fw-bold">Configuración VPS</h5>
+        <div class="card border-0">
+            <div class="card-header border-bottom py-3">
+                <h5 class="mb-0 fw-bold text-muted small text-uppercase letter-spacing-05">Resumen de Configuración</h5>
             </div>
-            <div class="card-body">
-                <form id="formEditServidor">
-                    <input type="hidden" name="id" value="<?= $server_id ?>">
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold text-muted">Nombre del Servidor</label>
-                        <input type="text" class="form-control" name="name" id="editServerName" required>
+            <div class="card-body p-4">
+                <div class="row g-4">
+                    <div class="col-md-6 col-lg-3">
+                        <label class="small text-muted fw-bold text-uppercase d-block mb-1">Nombre</label>
+                        <div class="h5 mb-0" id="infoName">-</div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold text-muted">Propietario (Cliente)</label>
-                        <select class="form-select" name="client_id" id="editServerClientId">
-                            <!-- Dinámico -->
-                        </select>
+                    <div class="col-md-6 col-lg-3">
+                        <label class="small text-muted fw-bold text-uppercase d-block mb-1">Propietario /
+                            Cliente</label>
+                        <div class="h5 mb-0" id="infoOwner">-</div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label small fw-bold text-muted">IPv4</label>
-                            <input type="text" class="form-control" name="ipv4" id="editIpv4">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label small fw-bold text-muted">IPv6</label>
-                            <input type="text" class="form-control" name="ipv6" id="editIpv6">
-                        </div>
+                    <div class="col-md-6 col-lg-3">
+                        <label class="small text-muted fw-bold text-uppercase d-block mb-1">IPv4 Address</label>
+                        <div class="h5 mb-0 font-monospace" id="infoIpv4">-</div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label small fw-bold text-muted">SO</label>
-                            <input type="text" class="form-control" name="os" id="editOs">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label small fw-bold text-muted">Versión SO</label>
-                            <input type="text" class="form-control" name="os_version" id="editOsVersion">
-                        </div>
+                    <div class="col-md-6 col-lg-3">
+                        <label class="small text-muted fw-bold text-uppercase d-block mb-1">IPv6 Address</label>
+                        <div class="h5 mb-0 font-monospace" id="infoIpv6">-</div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold text-muted">Fecha Creación VPS</label>
-                        <input type="date" class="form-control" name="created_at" id="editCreatedAt">
+                    <div class="col-md-6 col-lg-3">
+                        <label class="small text-muted fw-bold text-uppercase d-block mb-1">Sistema Operativo</label>
+                        <div class="h5 mb-0" id="infoOs">-</div>
                     </div>
-                </form>
+                    <div class="col-md-6 col-lg-3">
+                        <label class="small text-muted fw-bold text-uppercase d-block mb-1">Versión del SO</label>
+                        <div class="h5 mb-0" id="infoOsVersion">-</div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <label class="small text-muted fw-bold text-uppercase d-block mb-1">Fecha Creación VPS</label>
+                        <div class="h5 mb-0" id="infoCreatedAt">-</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -142,53 +137,49 @@ if (!$server_id) {
 </div>
 
 <script>
-    $(document).ready(function () {
-        const serverId = <?= $server_id ?>;
+$(document).ready(function() {
+    const serverId = <?= $server_id ?>;
 
-        function loadServerData() {
-            $.post('includes/endpoints/servidores.php', { action: 'fetch', id: serverId }, function (res) {
-                if (res.status === 'success') {
-                    const s = res.data;
-                    $('#serverTitle, #breadcrumbServerName').text(s.name);
-                    $('#editServerName').val(s.name);
-                    $('#editIpv4').val(s.ipv4);
-                    $('#editIpv6').val(s.ipv6);
-                    $('#editOs').val(s.os);
-                    $('#editOsVersion').val(s.os_version);
-                    $('#editCreatedAt').val(s.created_at);
+    function formatDate(dateStr) {
+        if (!dateStr) return 'Sin fecha';
+        const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+        const d = new Date(dateStr + "T12:00:00");
+        return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+    }
 
-                    loadClientsSelect(s.client_id);
-                }
-            }, 'json');
-        }
+    function loadServerData() {
+        $.post('includes/endpoints/servidores.php', { action: 'fetch', id: serverId }, function(res) {
+            if (res.status === 'success') {
+                const s = res.data;
+                $('#serverTitle, #breadcrumbServerName').text(s.name);
+                
+                // Populate summary info
+                $('#infoName').text(s.name);
+                $('#infoOwner').text(s.client_name || 'Sin propietario');
+                $('#infoIpv4').text(s.ipv4 || '-');
+                $('#infoIpv6').text(s.ipv6 || '-');
+                $('#infoOs').text(s.os || '-');
+                $('#infoOsVersion').text(s.os_version || '-');
+                $('#infoCreatedAt').text(formatDate(s.created_at));
+            }
+        }, 'json');
+    }
 
-        function loadClientsSelect(selectedId) {
-            $.post('includes/endpoints/servidores.php', { action: 'list_clients' }, function (res) {
-                if (res.status === 'success') {
-                    let options = '<option value="">-- Sin propietario --</option>';
-                    res.data.forEach(c => {
-                        options += `<option value="${c.id}" ${c.id == selectedId ? 'selected' : ''}>${c.name}</option>`;
-                    });
-                    $('#editServerClientId').html(options);
-                }
-            }, 'json');
-        }
-
-        function loadSoftware() {
-            $.post('includes/endpoints/server_software.php', { action: 'list', server_id: serverId }, function (res) {
-                if (res.status === 'success') {
-                    let html = '';
-                    res.data.forEach(sw => {
-                        html += `
+    function loadSoftware() {
+        $.post('includes/endpoints/server_software.php', { action: 'list', server_id: serverId }, function(res) {
+            if (res.status === 'success') {
+                let html = '';
+                res.data.forEach(sw => {
+                    html += `
                         <tr>
-                            <td class="px-4 fw-medium" data-label="Programa">${sw.name}</td>
+                            <td class="px-4 fw-bold" data-label="Programa">${sw.name}</td>
                             <td data-label="Versión">${sw.version || '-'}</td>
-                            <td data-label="Descripción"><small class="text-muted">${sw.description || '-'}</small></td>
+                            <td data-label="Descripción"><span class="text-muted small">${sw.description || '-'}</span></td>
                             <td data-label="Instalación">
-                                <code class="small">${sw.install_command || '-'}</code>
+                                <code class="bg-light px-2 py-1 rounded small text-dark">${sw.install_command || '-'}</code>
                             </td>
                             <td class="text-end px-4">
-                                <button class="btn btn-sm btn-icon btn-light me-2 edit-software" data-sw='${JSON.stringify(sw)}'>
+                                <button class="btn btn-sm btn-icon btn-light text-muted me-2 edit-software" data-sw='${JSON.stringify(sw)}'>
                                     <i class="fas fa-edit"></i>
                                 </button>
                                 <button class="btn btn-sm btn-icon btn-light text-danger delete-software" data-id="${sw.id}">
@@ -197,70 +188,67 @@ if (!$server_id) {
                             </td>
                         </tr>
                     `;
-                    });
-                    $('#listaSoftware').html(html || '<tr><td colspan="5" class="text-center py-4 text-muted">No hay software registrado</td></tr>');
-                }
-            }, 'json');
-        }
+                });
+                $('#listaSoftware').html(html || '<tr><td colspan="5" class="text-center py-5 text-muted">No se ha registrado software en este servidor</td></tr>');
+            }
+        }, 'json');
+    }
 
-        $('#btnSaveServer').click(function () {
-            $.post('includes/endpoints/servidores.php', $('#formEditServidor').serialize() + '&action=update', function (res) {
-                if (res.status === 'success') {
-                    Swal.fire('Éxito', 'Configuración actualizada', 'success');
-                    loadServerData();
-                } else {
-                    Swal.fire('Error', res.message, 'error');
-                }
-            }, 'json');
-        });
-
-        $('#formSoftware').submit(function (e) {
-            e.preventDefault();
-            const action = $('#softwareId').val() ? 'update' : 'create';
-            $.post('includes/endpoints/server_software.php', $(this).serialize() + '&action=' + action, function (res) {
-                if (res.status === 'success') {
-                    Swal.fire('Éxito', res.message, 'success');
-                    $('#modalSoftware').modal('hide');
-                    $('#formSoftware')[0].reset();
-                    $('#softwareId').val('');
-                    loadSoftware();
-                } else {
-                    Swal.fire('Error', res.message, 'error');
-                }
-            }, 'json');
-        });
-
-        $(document).on('click', '.edit-software', function () {
-            const sw = $(this).data('sw');
-            $('#softwareId').val(sw.id);
-            $('#softwareName').val(sw.name);
-            $('#softwareVersion').val(sw.version);
-            $('#softwareDescription').val(sw.description);
-            $('#softwareInstallCommand').val(sw.install_command);
-            $('#modalSoftware').modal('show');
-        });
-
-        $(document).on('click', '.delete-software', function () {
-            const id = $(this).data('id');
-            Swal.fire({
-                title: '¿Eliminar registro?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.post('includes/endpoints/server_software.php', { action: 'delete', id: id }, function (res) {
-                        if (res.status === 'success') {
-                            Swal.fire('Eliminado', res.message, 'success');
-                            loadSoftware();
-                        }
-                    }, 'json');
-                }
-            });
-        });
-
-        loadServerData();
-        loadSoftware();
+    $('#formSoftware').submit(function(e) {
+        e.preventDefault();
+        const action = $('#softwareId').val() ? 'update' : 'create';
+        $.post('includes/endpoints/server_software.php', $(this).serialize() + '&action=' + action, function(res) {
+            if (res.status === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Hecho!',
+                    text: res.message,
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+                $('#modalSoftware').modal('hide');
+                $('#formSoftware')[0].reset();
+                $('#softwareId').val('');
+                loadSoftware();
+            } else {
+                Swal.fire('Error', res.message, 'error');
+            }
+        }, 'json');
     });
+
+    $(document).on('click', '.edit-software', function() {
+        const sw = $(this).data('sw');
+        $('#softwareId').val(sw.id);
+        $('#softwareName').val(sw.name);
+        $('#softwareVersion').val(sw.version);
+        $('#softwareDescription').val(sw.description);
+        $('#softwareInstallCommand').val(sw.install_command);
+        $('#modalSoftware').modal('show');
+    });
+
+    $(document).on('click', '.delete-software', function() {
+        const id = $(this).data('id');
+        Swal.fire({
+            title: '¿Eliminar registro?',
+            text: "Esta acción no se puede deshacer",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.post('includes/endpoints/server_software.php', { action: 'delete', id: id }, function(res) {
+                    if (res.status === 'success') {
+                        loadSoftware();
+                        Swal.fire('Eliminado', res.message, 'success');
+                    }
+                }, 'json');
+            }
+        });
+    });
+
+    loadServerData();
+    loadSoftware();
+});
 </script>
