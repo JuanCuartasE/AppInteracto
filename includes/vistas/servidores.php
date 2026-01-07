@@ -94,12 +94,21 @@
     $(document).ready(function () {
         function formatDate(dateStr) {
             if (!dateStr || dateStr === '0000-00-00') return 'Sin fecha';
-            const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-            // Create date in local time to avoid shift
-            const parts = dateStr.split('-');
-            if (parts.length !== 3) return dateStr;
-            const d = new Date(parts[0], parts[1] - 1, parts[2]);
-            return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+            try {
+                const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+                // Clean input from optional time part
+                const cleanDate = dateStr.split(' ')[0];
+                const parts = cleanDate.split('-');
+                if (parts.length !== 3) return dateStr;
+                
+                // Construct date using components (Year, MonthIndex, Day)
+                const d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                
+                if (isNaN(d.getTime())) return dateStr;
+                return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+            } catch (e) {
+                return dateStr;
+            }
         }
 
         function loadServers() {

@@ -137,40 +137,48 @@ if (!$server_id) {
 </div>
 
 <script>
-$(document).ready(function() {
-    const serverId = <?= $server_id ?>;
+    $(document).ready(function () {
+        const serverId = <?= $server_id ?>;
 
-    function formatDate(dateStr) {
-        if (!dateStr) return 'Sin fecha';
-        const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-        const d = new Date(dateStr + "T12:00:00");
-        return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
-    }
-
-    function loadServerData() {
-        $.post('includes/endpoints/servidores.php', { action: 'fetch', id: serverId }, function(res) {
-            if (res.status === 'success') {
-                const s = res.data;
-                $('#serverTitle, #breadcrumbServerName').text(s.name);
-                
-                // Populate summary info
-                $('#infoName').text(s.name);
-                $('#infoOwner').text(s.client_name || 'Sin propietario');
-                $('#infoIpv4').text(s.ipv4 || '-');
-                $('#infoIpv6').text(s.ipv6 || '-');
-                $('#infoOs').text(s.os || '-');
-                $('#infoOsVersion').text(s.os_version || '-');
-                $('#infoCreatedAt').text(formatDate(s.created_at));
+        function formatDate(dateStr) {
+            if (!dateStr || dateStr === '0000-00-00') return 'Sin fecha';
+            try {
+                const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+                const cleanDate = dateStr.split(' ')[0];
+                const parts = cleanDate.split('-');
+                if (parts.length !== 3) return dateStr;
+                const d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                if (isNaN(d.getTime())) return dateStr;
+                return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+            } catch (e) {
+                return dateStr;
             }
-        }, 'json');
-    }
+        }
 
-    function loadSoftware() {
-        $.post('includes/endpoints/server_software.php', { action: 'list', server_id: serverId }, function(res) {
-            if (res.status === 'success') {
-                let html = '';
-                res.data.forEach(sw => {
-                    html += `
+        function loadServerData() {
+            $.post('includes/endpoints/servidores.php', { action: 'fetch', id: serverId }, function (res) {
+                if (res.status === 'success') {
+                    const s = res.data;
+                    $('#serverTitle, #breadcrumbServerName').text(s.name);
+
+                    // Populate summary info
+                    $('#infoName').text(s.name);
+                    $('#infoOwner').text(s.client_name || 'Sin propietario');
+                    $('#infoIpv4').text(s.ipv4 || '-');
+                    $('#infoIpv6').text(s.ipv6 || '-');
+                    $('#infoOs').text(s.os || '-');
+                    $('#infoOsVersion').text(s.os_version || '-');
+                    $('#infoCreatedAt').text(formatDate(s.created_at));
+                }
+            }, 'json');
+        }
+
+        function loadSoftware() {
+            $.post('includes/endpoints/server_software.php', { action: 'list', server_id: serverId }, function (res) {
+                if (res.status === 'success') {
+                    let html = '';
+                    res.data.forEach(sw => {
+                        html += `
                         <tr>
                             <td class="px-4 fw-bold" data-label="Programa">${sw.name}</td>
                             <td data-label="Versión">${sw.version || '-'}</td>
@@ -188,67 +196,67 @@ $(document).ready(function() {
                             </td>
                         </tr>
                     `;
-                });
-                $('#listaSoftware').html(html || '<tr><td colspan="5" class="text-center py-5 text-muted">No se ha registrado software en este servidor</td></tr>');
-            }
-        }, 'json');
-    }
+                    });
+                    $('#listaSoftware').html(html || '<tr><td colspan="5" class="text-center py-5 text-muted">No se ha registrado software en este servidor</td></tr>');
+                }
+            }, 'json');
+        }
 
-    $('#formSoftware').submit(function(e) {
-        e.preventDefault();
-        const action = $('#softwareId').val() ? 'update' : 'create';
-        $.post('includes/endpoints/server_software.php', $(this).serialize() + '&action=' + action, function(res) {
-            if (res.status === 'success') {
-                Swal.fire({
-                    icon: 'success',
-                    title: '¡Hecho!',
-                    text: res.message,
-                    timer: 1500,
-                    showConfirmButton: false
-                });
-                $('#modalSoftware').modal('hide');
-                $('#formSoftware')[0].reset();
-                $('#softwareId').val('');
-                loadSoftware();
-            } else {
-                Swal.fire('Error', res.message, 'error');
-            }
-        }, 'json');
-    });
-
-    $(document).on('click', '.edit-software', function() {
-        const sw = $(this).data('sw');
-        $('#softwareId').val(sw.id);
-        $('#softwareName').val(sw.name);
-        $('#softwareVersion').val(sw.version);
-        $('#softwareDescription').val(sw.description);
-        $('#softwareInstallCommand').val(sw.install_command);
-        $('#modalSoftware').modal('show');
-    });
-
-    $(document).on('click', '.delete-software', function() {
-        const id = $(this).data('id');
-        Swal.fire({
-            title: '¿Eliminar registro?',
-            text: "Esta acción no se puede deshacer",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            confirmButtonText: 'Sí, eliminar',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.post('includes/endpoints/server_software.php', { action: 'delete', id: id }, function(res) {
-                    if (res.status === 'success') {
-                        loadSoftware();
-                        Swal.fire('Eliminado', res.message, 'success');
-                    }
-                }, 'json');
-            }
+        $('#formSoftware').submit(function (e) {
+            e.preventDefault();
+            const action = $('#softwareId').val() ? 'update' : 'create';
+            $.post('includes/endpoints/server_software.php', $(this).serialize() + '&action=' + action, function (res) {
+                if (res.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Hecho!',
+                        text: res.message,
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    $('#modalSoftware').modal('hide');
+                    $('#formSoftware')[0].reset();
+                    $('#softwareId').val('');
+                    loadSoftware();
+                } else {
+                    Swal.fire('Error', res.message, 'error');
+                }
+            }, 'json');
         });
-    });
 
-    loadServerData();
-    loadSoftware();
-});
+        $(document).on('click', '.edit-software', function () {
+            const sw = $(this).data('sw');
+            $('#softwareId').val(sw.id);
+            $('#softwareName').val(sw.name);
+            $('#softwareVersion').val(sw.version);
+            $('#softwareDescription').val(sw.description);
+            $('#softwareInstallCommand').val(sw.install_command);
+            $('#modalSoftware').modal('show');
+        });
+
+        $(document).on('click', '.delete-software', function () {
+            const id = $(this).data('id');
+            Swal.fire({
+                title: '¿Eliminar registro?',
+                text: "Esta acción no se puede deshacer",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.post('includes/endpoints/server_software.php', { action: 'delete', id: id }, function (res) {
+                        if (res.status === 'success') {
+                            loadSoftware();
+                            Swal.fire('Eliminado', res.message, 'success');
+                        }
+                    }, 'json');
+                }
+            });
+        });
+
+        loadServerData();
+        loadSoftware();
+    });
 </script>

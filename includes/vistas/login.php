@@ -61,15 +61,16 @@
         width: 1000px;
         height: 600px;
         background: white;
-        border-radius: 20px;
+        border-radius: 8px;
         overflow: hidden;
     }
 
     .login-logo-circle {
-        width: 60px;
+        width: auto;
+        padding: 0 20px;
         height: 60px;
         background: white;
-        border-radius: 15px;
+        border-radius: 6px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -139,7 +140,7 @@
     .form-control-lg {
         padding: 0.8rem 1rem;
         font-size: 1rem;
-        border-radius: 10px;
+        border-radius: 4px;
     }
 </style>
 
