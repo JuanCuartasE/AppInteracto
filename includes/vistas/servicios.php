@@ -106,25 +106,13 @@
                 if (res.status === 'success') {
                     let html = '';
                     res.data.forEach(s => {
-                        const typeColors = {
-                            'Página Web': 'primary',
-                            'Aplicación': 'success',
-                            'API': 'info',
-                            'Base de Datos': 'warning',
-                            'Otro': 'secondary'
-                        };
-                        const badgeColor = typeColors[s.type] || 'secondary';
-
                         html += `
-                        <tr>
-                            <td class="px-4 fw-bold" data-label="Servicio">
-                                <a href="index.php?view=servicio_detalle&id=${s.id}" class="text-decoration-none text-dark">
-                                    ${s.name}
-                                </a>
+                        <tr class="clickable-row" data-id="${s.id}" style="cursor:pointer">
+                            <td class="px-4" data-label="Servicio">
+                                <span class="fw-bold d-block text-truncate" style="max-width: 200px;" title="${s.name}">${s.name}</span>
+                                <span class="text-muted small d-block text-truncate" style="max-width: 200px;">${s.client_name || 'Sin cliente'}</span>
                             </td>
-                            <td data-label="Tipo">
-                                <span class="badge bg-${badgeColor}">${s.type}</span>
-                            </td>
+                            <td data-label="Tipo">${s.type || '-'}</td>
                             <td data-label="Cliente">${s.client_name || '-'}</td>
                             <td data-label="Servidor">${s.server_name || '-'}</td>
                             <td data-label="Ubicación">
@@ -210,7 +198,14 @@
             }, 'json');
         });
 
-        $(document).on('click', '.edit-service', function () {
+        // Click on entire row to navigate to detail
+        $(document).on('click', '.clickable-row', function() {
+            const id = $(this).data('id');
+            window.location.href = 'index.php?view=servicio_detalle&id=' + id;
+        });
+
+        $(document).on('click', '.edit-service', function (e) {
+            e.stopPropagation();
             const id = $(this).data('id');
             $.post('includes/endpoints/servicios.php', { action: 'fetch', id: id }, function (res) {
                 if (res.status === 'success') {
@@ -232,7 +227,8 @@
             }, 'json');
         });
 
-        $(document).on('click', '.delete-service', function () {
+        $(document).on('click', '.delete-service', function (e) {
+            e.stopPropagation();
             const id = $(this).data('id');
             Swal.fire({
                 title: '¿Eliminar servicio?',

@@ -301,6 +301,15 @@ code {
     border-color: #1765cc;
 }
 
+/* Read-only form styling for uniform appearance */
+.form-control[readonly],
+.form-select:disabled {
+    background-color: #f8f9fa;
+    border-color: #e9ecef;
+    color: var(--text-main);
+    cursor: default;
+}
+
 .main-footer {
     margin-left: var(--sidebar-width);
     border-top: 1px solid var(--border-color);
