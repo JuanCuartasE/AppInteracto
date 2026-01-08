@@ -231,25 +231,31 @@ body {
 }
 
 .table thead th {
-    background-color: #fcfcfd;
+    background-color: #f8f9fa;
     color: var(--text-muted);
-    font-weight: 600;
-    font-size: 0.7rem;
+    font-weight: 700;
+    font-size: 0.65rem;
     letter-spacing: 0.05em;
     text-transform: uppercase;
     border-bottom: 1px solid var(--border-color);
-    padding: 1rem 1.5rem;
+    padding: 0.25rem 1rem;
 }
 
 .table tbody td {
-    padding: 1.25rem 1.5rem;
+    padding: 0.25rem 1rem;
     vertical-align: middle;
     border-bottom: 1px solid #f1f3f4;
     color: var(--text-main);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+    line-height: 1.1;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.table .btn-sm {
+    padding: 0.1rem 0.4rem;
+    font-size: 0.75rem;
 }
 
 code {

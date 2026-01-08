@@ -32,49 +32,50 @@ if (!$server_id) {
 </div>
 
 <div class="row g-4">
-    <!-- Información del Servidor (Read Only) -->
+    <!-- Información del Servidor (Summary Header) -->
     <div class="col-12">
-        <div class="card border-0">
-            <div class="card-header border-bottom py-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white py-3">
                 <h5 class="mb-0 fw-bold text-muted small text-uppercase letter-spacing-05">Resumen de Configuración</h5>
             </div>
             <div class="card-body p-4">
-                <div class="row g-4">
-                    <div class="col-md-6 col-lg-3">
-                        <label class="small text-muted fw-bold text-uppercase d-block mb-1">Nombre</label>
-                        <div class="h5 mb-0" id="infoName">-</div>
+                <div class="row g-3">
+                    <div class="col-md-4 col-lg-2">
+                        <label class="small text-muted fw-bold text-uppercase d-block mb-1"
+                            style="font-size: 0.65rem;">Nombre</label>
+                        <div class="fw-bold text-dark" id="infoName">-</div>
                     </div>
-                    <div class="col-md-6 col-lg-3">
-                        <label class="small text-muted fw-bold text-uppercase d-block mb-1">Propietario /
-                            Cliente</label>
-                        <div class="h5 mb-0" id="infoOwner">-</div>
+                    <div class="col-md-4 col-lg-2">
+                        <label class="small text-muted fw-bold text-uppercase d-block mb-1"
+                            style="font-size: 0.65rem;">Propietario</label>
+                        <div class="fw-bold text-dark" id="infoOwner">-</div>
                     </div>
-                    <div class="col-md-6 col-lg-3">
-                        <label class="small text-muted fw-bold text-uppercase d-block mb-1">IPv4 Address</label>
-                        <div class="h5 mb-0 font-monospace" id="infoIpv4">-</div>
+                    <div class="col-md-4 col-lg-2">
+                        <label class="small text-muted fw-bold text-uppercase d-block mb-1"
+                            style="font-size: 0.65rem;">IPv4 Address</label>
+                        <div class="font-monospace text-primary" id="infoIpv4">-</div>
                     </div>
-                    <div class="col-md-6 col-lg-3">
-                        <label class="small text-muted fw-bold text-uppercase d-block mb-1">IPv6 Address</label>
-                        <div class="h5 mb-0 font-monospace" id="infoIpv6">-</div>
+                    <div class="col-md-4 col-lg-2">
+                        <label class="small text-muted fw-bold text-uppercase d-block mb-1"
+                            style="font-size: 0.65rem;">IPv6 Address</label>
+                        <div class="font-monospace text-primary" id="infoIpv6" style="font-size: 0.75rem;">-</div>
                     </div>
-                    <div class="col-md-6 col-lg-3">
-                        <label class="small text-muted fw-bold text-uppercase d-block mb-1">Sistema Operativo</label>
-                        <div class="h5 mb-0" id="infoOs">-</div>
+                    <div class="col-md-4 col-lg-2">
+                        <label class="small text-muted fw-bold text-uppercase d-block mb-1"
+                            style="font-size: 0.65rem;">Sistema Ops</label>
+                        <div class="text-dark" id="infoOs">-</div>
                     </div>
-                    <div class="col-md-6 col-lg-3">
-                        <label class="small text-muted fw-bold text-uppercase d-block mb-1">Versión del SO</label>
-                        <div class="h5 mb-0" id="infoOsVersion">-</div>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <label class="small text-muted fw-bold text-uppercase d-block mb-1">Fecha Creación VPS</label>
-                        <div class="h5 mb-0" id="infoCreatedAt">-</div>
+                    <div class="col-md-4 col-lg-2">
+                        <label class="small text-muted fw-bold text-uppercase d-block mb-1"
+                            style="font-size: 0.65rem;">Fecha VPS</label>
+                        <div class="text-muted" id="infoCreatedAt">-</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Software Instalado -->
+    <!-- Software Instalado (Abajo) -->
     <div class="col-12">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">

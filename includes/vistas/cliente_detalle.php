@@ -31,28 +31,28 @@ if (!$client_id) {
 </div>
 
 <div class="row g-4">
-    <!-- Información del Cliente -->
-    <div class="col-lg-4">
-        <div class="card border-0 shadow-sm mb-4">
+    <!-- Información del Cliente (Arriba) -->
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
             <div class="card-header bg-white py-3">
                 <h5 class="mb-0 fw-bold">Información General</h5>
             </div>
             <div class="card-body">
                 <form id="formEditCliente">
                     <input type="hidden" name="id" value="<?= $client_id ?>">
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold text-muted">Nombre / Razón Social</label>
-                        <input type="text" class="form-control" name="name" id="editName" required>
-                    </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
+                            <label class="form-label small fw-bold text-muted">Nombre / Razón Social</label>
+                            <input type="text" class="form-control" name="name" id="editName" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
                             <label class="form-label small fw-bold text-muted">Tipo</label>
                             <select class="form-select" name="type" id="editType">
                                 <option value="Cliente">Cliente</option>
                                 <option value="Empresa">Empresa</option>
                             </select>
                         </div>
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-3 mb-3">
                             <label class="form-label small fw-bold text-muted">Tipo Doc</label>
                             <select class="form-select" name="doc_type" id="editDocType">
                                 <option value="CC">CC</option>
@@ -62,34 +62,38 @@ if (!$client_id) {
                             </select>
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold text-muted">Nro Documento</label>
-                        <input type="text" class="form-control" name="doc_number" id="editDocNumber">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label small fw-bold text-muted">Nro Documento</label>
+                            <input type="text" class="form-control" name="doc_number" id="editDocNumber">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label small fw-bold text-muted">Dirección</label>
+                            <input type="text" class="form-control" name="address" id="editAddress">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label small fw-bold text-muted">Municipio</label>
+                            <input type="text" class="form-control" name="municipality" id="editMunicipality">
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold text-muted">Dirección</label>
-                        <input type="text" class="form-control" name="address" id="editAddress">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold text-muted">Municipio</label>
-                        <input type="text" class="form-control" name="municipality" id="editMunicipality">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold text-muted">Página Web</label>
-                        <input type="url" class="form-control" name="website" id="editWebsite">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold text-muted">Descripción</label>
-                        <textarea class="form-control" name="description" id="editDescription" rows="4"></textarea>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label small fw-bold text-muted">Página Web</label>
+                            <input type="url" class="form-control" name="website" id="editWebsite">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label small fw-bold text-muted">Descripción Corta</label>
+                            <input type="text" class="form-control" name="description" id="editDescription">
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Contactos -->
-    <div class="col-lg-8">
-        <div class="card border-0 shadow-sm h-100">
+    <!-- Contactos (Abajo) -->
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
             <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
                 <h5 class="mb-0 fw-bold">Contactos Relacionados</h5>
                 <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalContacto">
