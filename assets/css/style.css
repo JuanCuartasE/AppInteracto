@@ -223,7 +223,7 @@ body {
 .card-header {
     background-color: #FFFFFF !important;
     border-bottom: 1px solid var(--border-color) !important;
-    padding: 1.25rem 1.5rem !important;
+    padding: 0.25rem 1rem !important;
 }
 
 .table {
