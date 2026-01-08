@@ -264,14 +264,55 @@ if (!$service_id) {
             }
         });
 
+        // Función auxiliar para copiar al portapapeles con fallback
+        function copyToClipboard(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                // Usar API moderna si está disponible y segura
+                return navigator.clipboard.writeText(text);
+            } else {
+                // Fallback para HTTP o navegadores antiguos
+                let textArea = document.createElement("textarea");
+                textArea.value = text;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-9999px";
+                textArea.style.top = "0";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                return new Promise((resolve, reject) => {
+                    try {
+                        const successful = document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                        if (successful) {
+                            resolve();
+                        } else {
+                            reject(new Error('Falló execCommand'));
+                        }
+                    } catch (err) {
+                        document.body.removeChild(textArea);
+                        reject(err);
+                    }
+                });
+            }
+        }
+
         $(document).on('click', '.copy-btn', function () {
             const text = $(this).data('copy');
-            navigator.clipboard.writeText(text).then(() => {
+            copyToClipboard(text).then(() => {
                 Swal.fire({
                     icon: 'success',
                     title: 'Copiado',
                     text: 'Texto copiado al portapapeles',
                     timer: 1000,
+                    showConfirmButton: false
+                });
+            }).catch(err => {
+                console.error('Error al copiar:', err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No se pudo copiar el texto',
+                    timer: 2000,
                     showConfirmButton: false
                 });
             });
