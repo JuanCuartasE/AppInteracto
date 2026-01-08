@@ -25,7 +25,8 @@ if (!$client_id) {
             <button class="btn btn-outline-primary px-4" id="btnEditClient" style="display: none;">
                 <i class="fas fa-edit me-2"></i> Editar
             </button>
-            <button class="btn btn-primary px-4 fw-bold" id="btnSaveClient" style="display: none; background-color: #1a73e8; border-color: #1a73e8;">
+            <button class="btn btn-primary px-4 fw-bold" id="btnSaveClient"
+                style="display: none; background-color: #1a73e8; border-color: #1a73e8;">
                 <i class="fas fa-save me-2"></i> Guardar Cambios
             </button>
         </div>
@@ -36,8 +37,8 @@ if (!$client_id) {
     <!-- Información del Cliente (Arriba) -->
     <div class="col-12">
         <div class="card border-0 shadow-sm">
-            <div class="card-header bg-white py-3">
-                <h5 class="mb-0 fw-bold">Información General</h5>
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <span class="fw-bold text-muted small text-uppercase">Información General</span>
             </div>
             <div class="card-body">
                 <form id="formEditCliente">
@@ -96,10 +97,11 @@ if (!$client_id) {
     <!-- Contactos (Abajo) -->
     <div class="col-12">
         <div class="card border-0 shadow-sm">
-            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-                <h5 class="mb-0 fw-bold">Contactos Relacionados</h5>
-                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalContacto">
-                    <i class="fas fa-plus me-1"></i> Añadir Contacto
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <span class="fw-bold text-muted small text-uppercase">Contactos Relacionados</span>
+                <button class="btn btn-xs btn-primary" data-bs-toggle="modal" data-bs-target="#modalContacto"
+                    style="font-size: 0.7rem; padding: 0.2rem 0.5rem;">
+                    <i class="fas fa-plus me-1"></i> Añadir
                 </button>
             </div>
             <div class="card-body p-0">
@@ -221,7 +223,7 @@ if (!$client_id) {
         function toggleEditMode(enable) {
             editMode = enable;
             const fields = $('#formEditCliente input, #formEditCliente select');
-            
+
             if (enable) {
                 fields.prop('readonly', false).prop('disabled', false);
                 $('#btnEditClient').hide();
@@ -281,7 +283,7 @@ if (!$client_id) {
             }, 'json');
         }
 
-        $('#btnEditClient').click(function() {
+        $('#btnEditClient').click(function () {
             toggleEditMode(true);
         });
 

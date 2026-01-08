@@ -42,8 +42,8 @@ if (!$server_id) {
     <!-- Información del Servidor (Summary Header) -->
     <div class="col-12">
         <div class="card border-0 shadow-sm">
-            <div class="card-header bg-white py-3">
-                <h5 class="mb-0 fw-bold text-muted small text-uppercase letter-spacing-05">Resumen de Configuración</h5>
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <span class="fw-bold text-muted small text-uppercase">Resumen de Configuración</span>
             </div>
             <div class="card-body p-4">
                 <form id="formEditServer">
@@ -87,10 +87,11 @@ if (!$server_id) {
     <!-- Software Instalado (Abajo) -->
     <div class="col-12">
         <div class="card border-0 shadow-sm h-100">
-            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-                <h5 class="mb-0 fw-bold">Software Instalado</h5>
-                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalSoftware">
-                    <i class="fas fa-plus me-1"></i> Añadir Software
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <span class="fw-bold text-muted small text-uppercase">Software Instalado</span>
+                <button class="btn btn-xs btn-primary" data-bs-toggle="modal" data-bs-target="#modalSoftware"
+                    style="font-size: 0.7rem; padding: 0.2rem 0.5rem;">
+                    <i class="fas fa-plus me-1"></i> Añadir
                 </button>
             </div>
             <div class="card-body p-0">

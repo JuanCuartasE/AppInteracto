@@ -30,8 +30,8 @@ if (!$service_id) {
     <!-- Información del Servicio -->
     <div class="col-12">
         <div class="card border-0 shadow-sm">
-            <div class="card-header bg-white py-3">
-                <h5 class="mb-0 fw-bold text-muted small text-uppercase">Información General</h5>
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <span class="fw-bold text-muted small text-uppercase">Información General</span>
             </div>
             <div class="card-body p-4">
                 <div class="row g-3">
@@ -63,10 +63,11 @@ if (!$service_id) {
     <!-- Detalles Técnicos / Credenciales -->
     <div class="col-12">
         <div class="card border-0 shadow-sm">
-            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-                <h5 class="mb-0 fw-bold">Accesos y Credenciales</h5>
-                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalDetalle">
-                    <i class="fas fa-plus me-1"></i> Añadir Acceso
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <span class="fw-bold text-muted small text-uppercase">Accesos y Credenciales</span>
+                <button class="btn btn-xs btn-primary" data-bs-toggle="modal" data-bs-target="#modalDetalle"
+                    style="font-size: 0.7rem; padding: 0.2rem 0.5rem;">
+                    <i class="fas fa-plus me-1"></i> Añadir
                 </button>
             </div>
             <div class="card-body p-3">
