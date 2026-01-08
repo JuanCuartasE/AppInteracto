@@ -69,8 +69,8 @@ if (!$service_id) {
                     <i class="fas fa-plus me-1"></i> Añadir Acceso
                 </button>
             </div>
-            <div class="card-body p-0">
-                <div id="listaDetalles">
+            <div class="card-body p-3">
+                <div class="row g-3" id="listaDetalles">
                     <!-- Dinámico -->
                 </div>
             </div>
@@ -186,55 +186,62 @@ if (!$service_id) {
                 if (res.status === 'success') {
                     let html = '';
                     if (res.data.length === 0) {
-                        html = '<div class="p-5 text-center text-muted">No hay accesos registrados</div>';
+                        html = '<div class="col-12 p-5 text-center text-muted">No hay accesos registrados</div>';
                     } else {
                         res.data.forEach(d => {
                             html += `
-                            <div class="detail-card p-4 m-3">
-                                <div class="d-flex justify-content-between align-items-start mb-3">
-                                    <div>
-                                        <h6 class="fw-bold mb-1">${d.role_name}</h6>
-                                        ${d.url ? `<a href="${d.url}" target="_blank" class="small text-primary"><i class="fas fa-external-link-alt me-1"></i>${d.url}</a>` : ''}
-                                    </div>
-                                    <div>
-                                        <button class="btn btn-sm btn-light me-2 edit-detail" data-detail='${JSON.stringify(d)}'>
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-light text-danger delete-detail" data-id="${d.id}">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="row g-3 mb-3">
-                                    ${d.username ? `
-                                    <div class="col-md-6">
-                                        <label class="small text-muted fw-bold text-uppercase d-block mb-1" style="font-size: 0.65rem;">Usuario</label>
-                                        <div class="credential-field">
-                                            ${d.username}
-                                            <button class="btn btn-sm btn-link p-0 ms-2 copy-btn" data-copy="${d.username}">
-                                                <i class="fas fa-copy"></i>
+                            <div class="col-md-6">
+                                <div class="card h-100 border shadow-sm">
+                                    <div class="card-header bg-light d-flex justify-content-between align-items-center py-2">
+                                        <h6 class="mb-0 fw-bold">${d.role_name}</h6>
+                                        <div>
+                                            <button class="btn btn-sm btn-light edit-detail" data-detail='${JSON.stringify(d)}'>
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-light text-danger delete-detail" data-id="${d.id}">
+                                                <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
                                     </div>
-                                    ` : ''}
-                                    ${d.password ? `
-                                    <div class="col-md-6">
-                                        <label class="small text-muted fw-bold text-uppercase d-block mb-1" style="font-size: 0.65rem;">Contraseña</label>
-                                        <div class="credential-field">
-                                            ••••••••
-                                            <button class="btn btn-sm btn-link p-0 ms-2 copy-btn" data-copy="${d.password}">
-                                                <i class="fas fa-copy"></i>
-                                            </button>
+                                    <div class="card-body py-3">
+                                        ${d.url ? `
+                                        <div class="mb-3">
+                                            <label class="small text-muted fw-bold text-uppercase d-block mb-1" style="font-size: 0.65rem;">URL de Acceso</label>
+                                            <a href="${d.url}" target="_blank" class="small text-primary text-break"><i class="fas fa-external-link-alt me-1"></i>${d.url}</a>
                                         </div>
+                                        ` : ''}
+                                        <div class="row g-2">
+                                            ${d.username ? `
+                                            <div class="col-6">
+                                                <label class="small text-muted fw-bold text-uppercase d-block mb-1" style="font-size: 0.65rem;">Usuario</label>
+                                                <div class="credential-field d-flex justify-content-between align-items-center">
+                                                    <span class="text-truncate">${d.username}</span>
+                                                    <button class="btn btn-sm btn-link p-0 copy-btn" data-copy="${d.username}">
+                                                        <i class="fas fa-copy"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            ` : ''}
+                                            ${d.password ? `
+                                            <div class="col-6">
+                                                <label class="small text-muted fw-bold text-uppercase d-block mb-1" style="font-size: 0.65rem;">Contraseña</label>
+                                                <div class="credential-field d-flex justify-content-between align-items-center">
+                                                    <span>••••••••</span>
+                                                    <button class="btn btn-sm btn-link p-0 copy-btn" data-copy="${d.password}">
+                                                        <i class="fas fa-copy"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            ` : ''}
+                                        </div>
+                                        ${d.observations ? `
+                                        <div class="mt-3">
+                                            <label class="small text-muted fw-bold text-uppercase d-block mb-1" style="font-size: 0.65rem;">Observaciones</label>
+                                            <div class="bg-light p-2 rounded small" style="white-space: pre-wrap; max-height: 100px; overflow-y: auto;">${d.observations}</div>
+                                        </div>
+                                        ` : ''}
                                     </div>
-                                    ` : ''}
                                 </div>
-                                ${d.observations ? `
-                                <div>
-                                    <label class="small text-muted fw-bold text-uppercase d-block mb-2" style="font-size: 0.65rem;">Observaciones</label>
-                                    <div class="bg-white p-3 rounded border small" style="white-space: pre-wrap;">${d.observations}</div>
-                                </div>
-                                ` : ''}
                             </div>
                             `;
                         });
