@@ -27,6 +27,13 @@ if (!$server_id) {
             <button class="btn btn-outline-secondary px-3" onclick="location.reload()">
                 <i class="fas fa-sync-alt"></i>
             </button>
+            <button class="btn btn-outline-primary px-4" id="btnEditServer" style="display: none;">
+                <i class="fas fa-edit me-2"></i> Editar
+            </button>
+            <button class="btn btn-primary px-4 fw-bold" id="btnSaveServer"
+                style="display: none; background-color: #1a73e8; border-color: #1a73e8;">
+                <i class="fas fa-save me-2"></i> Guardar
+            </button>
         </div>
     </div>
 </div>
@@ -39,38 +46,40 @@ if (!$server_id) {
                 <h5 class="mb-0 fw-bold text-muted small text-uppercase letter-spacing-05">Resumen de Configuración</h5>
             </div>
             <div class="card-body p-4">
-                <div class="row g-3">
-                    <div class="col-md-4 col-lg-2">
-                        <label class="small text-muted fw-bold text-uppercase d-block mb-1"
-                            style="font-size: 0.65rem;">Nombre</label>
-                        <div class="fw-bold text-dark" id="infoName">-</div>
+                <form id="formEditServer">
+                    <input type="hidden" name="id" value="<?= $server_id ?>">
+                    <div class="row g-3">
+                        <div class="col-md-4 col-lg-3">
+                            <label class="small text-muted fw-bold text-uppercase d-block mb-1"
+                                style="font-size: 0.65rem;">Nombre</label>
+                            <input type="text" class="form-control form-control-sm" name="name" id="infoName" readonly>
+                        </div>
+                        <div class="col-md-4 col-lg-3">
+                            <label class="small text-muted fw-bold text-uppercase d-block mb-1"
+                                style="font-size: 0.65rem;">Propietario</label>
+                            <select class="form-select form-select-sm" name="client_id" id="infoClientId" disabled>
+                                <option value="">Sin propietario</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 col-lg-2">
+                            <label class="small text-muted fw-bold text-uppercase d-block mb-1"
+                                style="font-size: 0.65rem;">IPv4 Address</label>
+                            <input type="text" class="form-control form-control-sm font-monospace" name="ipv4"
+                                id="infoIpv4" readonly>
+                        </div>
+                        <div class="col-md-4 col-lg-2">
+                            <label class="small text-muted fw-bold text-uppercase d-block mb-1"
+                                style="font-size: 0.65rem;">IPv6 Address</label>
+                            <input type="text" class="form-control form-control-sm font-monospace" name="ipv6"
+                                id="infoIpv6" readonly style="font-size: 0.75rem;">
+                        </div>
+                        <div class="col-md-4 col-lg-2">
+                            <label class="small text-muted fw-bold text-uppercase d-block mb-1"
+                                style="font-size: 0.65rem;">Sistema Ops</label>
+                            <input type="text" class="form-control form-control-sm" name="os" id="infoOs" readonly>
+                        </div>
                     </div>
-                    <div class="col-md-4 col-lg-2">
-                        <label class="small text-muted fw-bold text-uppercase d-block mb-1"
-                            style="font-size: 0.65rem;">Propietario</label>
-                        <div class="fw-bold text-dark" id="infoOwner">-</div>
-                    </div>
-                    <div class="col-md-4 col-lg-2">
-                        <label class="small text-muted fw-bold text-uppercase d-block mb-1"
-                            style="font-size: 0.65rem;">IPv4 Address</label>
-                        <div class="font-monospace text-primary" id="infoIpv4">-</div>
-                    </div>
-                    <div class="col-md-4 col-lg-2">
-                        <label class="small text-muted fw-bold text-uppercase d-block mb-1"
-                            style="font-size: 0.65rem;">IPv6 Address</label>
-                        <div class="font-monospace text-primary" id="infoIpv6" style="font-size: 0.75rem;">-</div>
-                    </div>
-                    <div class="col-md-4 col-lg-2">
-                        <label class="small text-muted fw-bold text-uppercase d-block mb-1"
-                            style="font-size: 0.65rem;">Sistema Ops</label>
-                        <div class="text-dark" id="infoOs">-</div>
-                    </div>
-                    <div class="col-md-4 col-lg-2">
-                        <label class="small text-muted fw-bold text-uppercase d-block mb-1"
-                            style="font-size: 0.65rem;">Fecha VPS</label>
-                        <div class="text-muted" id="infoCreatedAt">-</div>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -147,6 +156,22 @@ if (!$server_id) {
 <script>
     $(document).ready(function () {
         const serverId = <?= $server_id ?>;
+        let editMode = false;
+
+        function toggleEditMode(enable) {
+            editMode = enable;
+            const fields = $('#formEditServer input, #formEditServer select');
+
+            if (enable) {
+                fields.prop('readonly', false).prop('disabled', false);
+                $('#btnEditServer').hide();
+                $('#btnSaveServer').show();
+            } else {
+                fields.prop('readonly', true).prop('disabled', true);
+                $('#btnEditServer').show();
+                $('#btnSaveServer').hide();
+            }
+        }
 
         function formatDate(dateStr) {
             if (!dateStr || dateStr === '0000-00-00') return 'Sin fecha';
@@ -163,20 +188,32 @@ if (!$server_id) {
             }
         }
 
+        function loadClients() {
+            $.post('includes/endpoints/servidores.php', { action: 'list_clients' }, function (res) {
+                if (res.status === 'success') {
+                    let options = '<option value="">Sin propietario</option>';
+                    res.data.forEach(c => {
+                        options += `<option value="${c.id}">${c.name}</option>`;
+                    });
+                    $('#infoClientId').html(options);
+                }
+            }, 'json');
+        }
+
         function loadServerData() {
             $.post('includes/endpoints/servidores.php', { action: 'fetch', id: serverId }, function (res) {
                 if (res.status === 'success') {
                     const s = res.data;
                     $('#serverTitle, #breadcrumbServerName').text(s.name);
 
-                    // Populate summary info
-                    $('#infoName').text(s.name);
-                    $('#infoOwner').text(s.client_name || 'Sin propietario');
-                    $('#infoIpv4').text(s.ipv4 || '-');
-                    $('#infoIpv6').text(s.ipv6 || '-');
-                    $('#infoOs').text(s.os || '-');
-                    $('#infoOsVersion').text(s.os_version || '-');
-                    $('#infoCreatedAt').text(formatDate(s.created_at));
+                    // Populate form fields
+                    $('#infoName').val(s.name);
+                    $('#infoClientId').val(s.client_id || '');
+                    $('#infoIpv4').val(s.ipv4 || '');
+                    $('#infoIpv6').val(s.ipv6 || '');
+                    $('#infoOs').val(s.os || '');
+
+                    $('#btnEditServer').show();
                 }
             }, 'json');
         }
@@ -209,6 +246,22 @@ if (!$server_id) {
                 }
             }, 'json');
         }
+
+        $('#btnEditServer').click(function () {
+            toggleEditMode(true);
+        });
+
+        $('#btnSaveServer').click(function () {
+            $.post('includes/endpoints/servidores.php', $('#formEditServer').serialize() + '&action=update', function (res) {
+                if (res.status === 'success') {
+                    Swal.fire('Éxito', 'Servidor actualizado correctamente', 'success');
+                    toggleEditMode(false);
+                    loadServerData();
+                } else {
+                    Swal.fire('Error', res.message, 'error');
+                }
+            }, 'json');
+        });
 
         $('#formSoftware').submit(function (e) {
             e.preventDefault();
@@ -264,6 +317,7 @@ if (!$server_id) {
             });
         });
 
+        loadClients();
         loadServerData();
         loadSoftware();
     });

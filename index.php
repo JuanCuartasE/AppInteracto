@@ -23,6 +23,7 @@ include 'includes/_estructura/_header.php';
 
 if ($is_logged_in) {
     include 'includes/_estructura/_menu.php';
+    echo '<div class="sidebar-overlay"></div>';
     echo '<main class="content-wrapper">';
 }
 

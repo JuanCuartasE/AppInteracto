@@ -22,8 +22,10 @@ if (!$client_id) {
             <button class="btn btn-outline-secondary px-3" onclick="location.reload()">
                 <i class="fas fa-sync-alt"></i>
             </button>
-            <button class="btn btn-primary px-4 fw-bold" id="btnSaveClient"
-                style="background-color: #1a73e8; border-color: #1a73e8;">
+            <button class="btn btn-outline-primary px-4" id="btnEditClient" style="display: none;">
+                <i class="fas fa-edit me-2"></i> Editar
+            </button>
+            <button class="btn btn-primary px-4 fw-bold" id="btnSaveClient" style="display: none; background-color: #1a73e8; border-color: #1a73e8;">
                 <i class="fas fa-save me-2"></i> Guardar Cambios
             </button>
         </div>
@@ -43,18 +45,18 @@ if (!$client_id) {
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label small fw-bold text-muted">Nombre / Razón Social</label>
-                            <input type="text" class="form-control" name="name" id="editName" required>
+                            <input type="text" class="form-control" name="name" id="editName" required readonly>
                         </div>
                         <div class="col-md-3 mb-3">
                             <label class="form-label small fw-bold text-muted">Tipo</label>
-                            <select class="form-select" name="type" id="editType">
+                            <select class="form-select" name="type" id="editType" disabled>
                                 <option value="Cliente">Cliente</option>
                                 <option value="Empresa">Empresa</option>
                             </select>
                         </div>
                         <div class="col-md-3 mb-3">
                             <label class="form-label small fw-bold text-muted">Tipo Doc</label>
-                            <select class="form-select" name="doc_type" id="editDocType">
+                            <select class="form-select" name="doc_type" id="editDocType" disabled>
                                 <option value="CC">CC</option>
                                 <option value="CE">CE</option>
                                 <option value="Pasaporte">Pasaporte</option>
@@ -65,25 +67,25 @@ if (!$client_id) {
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label class="form-label small fw-bold text-muted">Nro Documento</label>
-                            <input type="text" class="form-control" name="doc_number" id="editDocNumber">
+                            <input type="text" class="form-control" name="doc_number" id="editDocNumber" readonly>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label small fw-bold text-muted">Dirección</label>
-                            <input type="text" class="form-control" name="address" id="editAddress">
+                            <input type="text" class="form-control" name="address" id="editAddress" readonly>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label small fw-bold text-muted">Municipio</label>
-                            <input type="text" class="form-control" name="municipality" id="editMunicipality">
+                            <input type="text" class="form-control" name="municipality" id="editMunicipality" readonly>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label small fw-bold text-muted">Página Web</label>
-                            <input type="url" class="form-control" name="website" id="editWebsite">
+                            <input type="url" class="form-control" name="website" id="editWebsite" readonly>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label small fw-bold text-muted">Descripción Corta</label>
-                            <input type="text" class="form-control" name="description" id="editDescription">
+                            <input type="text" class="form-control" name="description" id="editDescription" readonly>
                         </div>
                     </div>
                 </form>
@@ -214,6 +216,22 @@ if (!$client_id) {
 <script>
     $(document).ready(function () {
         const clientId = <?= $client_id ?>;
+        let editMode = false;
+
+        function toggleEditMode(enable) {
+            editMode = enable;
+            const fields = $('#formEditCliente input, #formEditCliente select');
+            
+            if (enable) {
+                fields.prop('readonly', false).prop('disabled', false);
+                $('#btnEditClient').hide();
+                $('#btnSaveClient').show();
+            } else {
+                fields.prop('readonly', true).prop('disabled', true);
+                $('#btnEditClient').show();
+                $('#btnSaveClient').hide();
+            }
+        }
 
         function loadClientData() {
             $.post('includes/endpoints/clientes.php', { action: 'fetch', id: clientId }, function (res) {
@@ -228,6 +246,7 @@ if (!$client_id) {
                     $('#editMunicipality').val(c.municipality);
                     $('#editWebsite').val(c.website);
                     $('#editDescription').val(c.description);
+                    $('#btnEditClient').show();
                 } else {
                     Swal.fire('Error', res.message, 'error');
                 }
@@ -262,10 +281,15 @@ if (!$client_id) {
             }, 'json');
         }
 
+        $('#btnEditClient').click(function() {
+            toggleEditMode(true);
+        });
+
         $('#btnSaveClient').click(function () {
             $.post('includes/endpoints/clientes.php', $('#formEditCliente').serialize() + '&action=update', function (res) {
                 if (res.status === 'success') {
                     Swal.fire('Éxito', 'Información del cliente actualizada', 'success');
+                    toggleEditMode(false);
                     loadClientData();
                 } else {
                     Swal.fire('Error', res.message, 'error');

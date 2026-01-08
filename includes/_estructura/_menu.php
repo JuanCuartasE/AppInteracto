@@ -1,3 +1,4 @@
+<?php $view = $_GET['view'] ?? 'dashboard'; ?>
 <aside class="sidebar">
     <div class="sidebar-logo">
         <img src="assets/images/logo.png" alt="Logo">
@@ -20,10 +21,16 @@
                 </a>
             </li>
 
-            <li class="<?= (isset($_GET['view']) && strpos($_GET['view'], 'servidor') !== false) ? 'active' : '' ?>">
+            <li class="<?= ($view === 'servidores') ? 'active' : '' ?>">
                 <a href="index.php?view=servidores">
                     <i class="fas fa-server"></i>
                     <span>Servidores</span>
+                </a>
+            </li>
+            <li class="<?= ($view === 'servicios' || $view === 'servicio_detalle') ? 'active' : '' ?>">
+                <a href="index.php?view=servicios">
+                    <i class="fas fa-globe"></i>
+                    <span>Servicios</span>
                 </a>
             </li>
 

@@ -321,8 +321,18 @@ body.logged-out {
 
 /* Responsiveness */
 @media (max-width: 992px) {
+    :root {
+        --sidebar-width: 0px;
+    }
+
     .sidebar {
-        left: calc(-1 * var(--sidebar-width));
+        left: -240px;
+        width: 240px !important;
+    }
+
+    .sidebar .brand-name,
+    .sidebar .sidebar-nav li a span {
+        opacity: 1 !important;
     }
 
     .top-header,
@@ -331,12 +341,57 @@ body.logged-out {
         margin-left: 0;
     }
 
+    .top-header {
+        padding: 0 1rem;
+    }
+
+    .header-search {
+        margin: 0 0.5rem;
+    }
+
+    .header-search .search-input-wrapper {
+        background: transparent;
+    }
+
+    .header-search input {
+        display: none;
+    }
+
+    .header-search .search-input-wrapper i {
+        position: static;
+        font-size: 1.2rem;
+    }
+
+    body.sidebar-open {
+        overflow: hidden;
+    }
+
     body.sidebar-open .sidebar {
         left: 0;
     }
 
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+
     body.sidebar-open .sidebar-overlay {
         display: block !important;
+    }
+
+    /* Fix Dashboard for Mobile */
+    .p-5 {
+        padding: 2rem !important;
+    }
+
+    .display-4 {
+        font-size: 2rem;
     }
 
     /* Transform tables into cards on mobile */

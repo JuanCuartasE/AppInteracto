@@ -5,12 +5,13 @@
 
 <div class="row g-4 mb-5 animate__animated animate__fadeIn">
     <div class="col-12">
-        <div class="card border-0 bg-light p-5 position-relative overflow-hidden"
-            style="min-height: 280px; background: linear-gradient(90deg, #f8f9fa 0%, #e8f0fe 100%);">
+        <div class="card border-0 bg-light p-4 p-md-5 position-relative overflow-hidden dashboard-hero"
+            style="background: linear-gradient(90deg, #f8f9fa 0%, #e8f0fe 100%);">
             <div class="row align-items-center position-relative" style="z-index: 2;">
                 <div class="col-md-7">
-                    <h2 class="fw-bold mb-3">Empieza a gestionar tus servicios</h2>
-                    <p class="text-muted mb-4 lead">Administra clientes, servidores y usuarios desde una interfaz
+                    <h2 class="fw-bold mb-3 display-6">Empieza a gestionar tus servicios</h2>
+                    <p class="text-muted mb-4 lead small-mobile">Administra clientes, servidores y usuarios desde una
+                        interfaz
                         profesional inspirada en el análisis de datos de vanguardia.</p>
                     <div class="d-flex gap-2">
                         <a href="index.php?view=servidores" class="btn btn-primary px-4 py-2"

@@ -27,8 +27,11 @@
 
     <?php if (isset($_SESSION['interacto_user_id'])): ?>
         <header class="top-header">
-            <div class="header-left">
-                <div class="nav-context">
+            <div class="header-left d-flex align-items-center">
+                <button class="btn btn-link text-muted me-3 d-lg-none" id="sidebarToggle">
+                    <i class="fas fa-bars fa-lg"></i>
+                </button>
+                <div class="nav-context d-none d-sm-flex">
                     <a href="index.php?view=dashboard">Interacto</a>
                     <i class="fas fa-chevron-right"></i>
                     <span class="fw-bold text-dark"><?= ucfirst($_GET['view'] ?? 'Dashboard') ?></span>
