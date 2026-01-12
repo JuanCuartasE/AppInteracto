@@ -13,12 +13,18 @@ $action = $_POST['action'] ?? '';
 
 switch ($action) {
     case 'list':
-        $query = "SELECT s.*, c.name as client_name, srv.name as server_name 
+        $server_id = isset($_POST['server_id']) ? intval($_POST['server_id']) : null;
+        $sql = "SELECT s.*, c.name as client_name, srv.name as server_name 
                   FROM services s 
                   LEFT JOIN clients c ON s.client_id = c.id 
-                  LEFT JOIN servers srv ON s.server_id = srv.id 
-                  ORDER BY s.id DESC";
-        $result = $cnn->query($query);
+                  LEFT JOIN servers srv ON s.server_id = srv.id";
+
+        if ($server_id) {
+            $sql .= " WHERE s.server_id = $server_id";
+        }
+
+        $sql .= " ORDER BY s.id DESC";
+        $result = $cnn->query($sql);
         $data = [];
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;

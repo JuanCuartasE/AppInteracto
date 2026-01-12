@@ -11,8 +11,10 @@ if (!$service_id) {
         <div>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-2" style="font-size: 0.8rem;">
-                    <li class="breadcrumb-item"><a href="index.php?view=servicios"
-                            class="text-decoration-none">Servicios</a></li>
+                    <li class="breadcrumb-item"><a href="index.php?view=servidores"
+                            class="text-decoration-none">Servidores</a></li>
+                    <li class="breadcrumb-item"><a href="#" id="breadcrumbServerLink"
+                            class="text-decoration-none">...</a></li>
                     <li class="breadcrumb-item active" id="breadcrumbServiceName">Detalle</li>
                 </ol>
             </nav>
@@ -178,6 +180,15 @@ if (!$service_id) {
                     $('#infoClient').text(s.client_name || '-');
                     $('#infoServer').text(s.server_name || 'Sin servidor');
                     $('#infoPath').text(s.path || '-');
+
+                    // Update Breadcrumb
+                    if (s.server_id) {
+                        $('#breadcrumbServerLink').text(s.server_name || 'Servidor');
+                        $('#breadcrumbServerLink').attr('href', `index.php?view=servidor_detalle&id=${s.server_id}`);
+                    } else {
+                        $('#breadcrumbServerLink').text('Sin Servidor');
+                        $('#breadcrumbServerLink').addClass('text-muted').attr('href', '#');
+                    }
                 }
             }, 'json');
         }

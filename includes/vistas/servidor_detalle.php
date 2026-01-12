@@ -84,6 +84,37 @@ if (!$server_id) {
         </div>
     </div>
 
+    <!-- Servicios Vinculados -->
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <span class="fw-bold text-muted small text-uppercase">Servicios Vinculados</span>
+                <button class="btn btn-xs btn-primary" id="btnAddService"
+                    style="font-size: 0.7rem; padding: 0.2rem 0.5rem;">
+                    <i class="fas fa-plus me-1"></i> Añadir
+                </button>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0 table-mobile-cards">
+                        <thead class="bg-light text-muted small text-uppercase">
+                            <tr>
+                                <th class="px-4">Servicio</th>
+                                <th>Tipo</th>
+                                <th>Cliente</th>
+                                <th>Ubicación</th>
+                                <th class="text-end px-4">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listaServiciosVinculados">
+                            <!-- Dinámico -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Software Instalado (Abajo) -->
     <div class="col-12">
         <div class="card border-0 shadow-sm h-100">
@@ -113,6 +144,62 @@ if (!$server_id) {
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Modal Nuevo/Editar Servicio -->
+<div class="modal fade" id="modalServicio" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <form class="modal-content" id="formServicio">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title fw-bold">Datos del Servicio</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="id" id="servicioId">
+                <!-- Server ID fixed to current server -->
+                <input type="hidden" name="server_id" value="<?= $server_id ?>">
+
+                <div class="mb-4">
+                    <h6 class="fw-bold text-muted small text-uppercase mb-3">1. Información Básica</h6>
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <label class="form-label small fw-bold text-muted">Nombre del Servicio</label>
+                            <input type="text" class="form-control" name="name" id="servicioName" required
+                                placeholder="ej. Portal Web Corporativo">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label small fw-bold text-muted">Tipo</label>
+                            <select class="form-select" name="type" id="servicioType" required>
+                                <!-- Dinámico desde mst_tipo_servicio -->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="fw-bold text-muted small text-uppercase mb-3">2. Ubicación Técnica</h6>
+                    <label class="form-label small fw-bold text-muted">Path del Proyecto</label>
+                    <input type="text" class="form-control font-monospace bg-light" name="path" id="servicioPath"
+                        placeholder="/var/www/html/proyecto">
+                    <small class="text-muted">Ruta en el servidor donde se encuentra el proyecto</small>
+                </div>
+
+                <div class="mb-3">
+                    <h6 class="fw-bold text-muted small text-uppercase mb-3">3. Descripción</h6>
+                    <label class="form-label small fw-bold text-muted">Detalles Adicionales</label>
+                    <textarea class="form-control" name="description" id="servicioDescription" rows="3"
+                        placeholder="Información relevante sobre el servicio..."></textarea>
+                </div>
+
+                <!-- Hidden inputs for association -->
+                <input type="hidden" name="client_id" id="servicioClientId">
+            </div>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-light border" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary px-5 fw-bold">Guardar</button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -192,7 +279,7 @@ if (!$server_id) {
         function loadClients() {
             $.post('includes/endpoints/servidores.php', { action: 'list_clients' }, function (res) {
                 if (res.status === 'success') {
-                    let options = '<option value="">Sin propietario</option>';
+                    let options = '';
                     res.data.forEach(c => {
                         options += `<option value="${c.id}">${c.name}</option>`;
                     });
@@ -318,8 +405,193 @@ if (!$server_id) {
             });
         });
 
+        function loadLinkedServices() {
+            $.post('includes/endpoints/servicios.php', { action: 'list', server_id: serverId }, function (res) {
+                if (res.status === 'success') {
+                    let html = '';
+                    res.data.forEach(s => {
+                        html += `
+                        <tr class="clickable-row" data-href="index.php?view=servicio_detalle&id=${s.id}" style="cursor:pointer">
+                            <td class="px-4" data-label="Servicio">
+                                <a href="index.php?view=servicio_detalle&id=${s.id}" class="fw-bold text-primary text-decoration-none">${s.name}</a>
+                            </td>
+                            <td data-label="Tipo"><span class="badge bg-light text-dark border">${s.type}</span></td>
+                            <td data-label="Cliente">${s.client_name || '-'}</td>
+                            <td data-label="Ubicación"><code class="small text-muted">${s.path || '-'}</code></td>
+                            <td class="text-end px-4">
+                                <button class="btn btn-sm btn-icon btn-light me-2 edit-service" data-id="${s.id}">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-sm btn-icon btn-light text-danger delete-service" data-id="${s.id}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        `;
+                    });
+                    $('#listaServiciosVinculados').html(html || '<tr><td colspan="5" class="text-center py-5 text-muted">No hay servicios vinculados a este servidor</td></tr>');
+                }
+            }, 'json');
+        }
+
+        // Navigate on row click (delegated)
+        $(document).on('click', '.clickable-row', function (e) {
+            // Prevent if clicked on action buttons
+            if ($(e.target).closest('button').length || $(e.target).closest('a').length) return;
+            window.location = $(this).data('href');
+        });
+
+        $('#btnAddService').click(function () {
+            $('#formServicio')[0].reset();
+            $('#servicioId').val('');
+
+            // 1. Load Service Types from Maestros
+            $.post('includes/endpoints/maestros.php', { action: 'list_records', table_name: 'mst_tipo_servicio' }, function (res) {
+                if (res.status === 'success') {
+                    let opts = '';
+                    res.data.forEach(t => {
+                        opts += `<option value="${t.name}">${t.name}</option>`;
+                    });
+                    $('#servicioType').html(opts);
+                }
+            }, 'json');
+
+            // 2. Load Client (Restricted to Server Owner)
+            const serverOwnerId = $('#infoClientId').val();
+
+            // We need the list to show the name, but just selecting the one is enough.
+            // Reusing list_clients for consistency to show the name properly.
+            $.post('includes/endpoints/servidores.php', { action: 'list_clients' }, function (res) {
+                if (res.status === 'success') {
+                    let options = '<option value="">Seleccionar cliente...</option>';
+                    res.data.forEach(c => {
+                        options += `<option value="${c.id}">${c.name}</option>`;
+                    });
+                    $('#servicioClientId').html(options);
+
+                    // Auto-select and Lock
+                    if (serverOwnerId) {
+                        $('#servicioClientId').val(serverOwnerId);
+                        $('#servicioClientIdHidden').val(serverOwnerId);
+                    } else {
+                        // Case: Server owner is "Interacto SA" (id='') or Unassigned.
+                        // Logic: if serverOwner is empty, we assume Interacto SA internal?
+                        // The dropdown value for Interacto SA is '' (empty string).
+                        $('#servicioClientId').val('');
+                        $('#servicioClientIdHidden').val('');
+                    }
+                }
+            }, 'json');
+
+            $('#modalServicio').modal('show');
+        });
+
+        $('#formServicio').submit(function (e) {
+            e.preventDefault();
+
+            // Append the hidden client ID to the serialized data because disabled select isn't sent
+            // Alternatively, just enable it before send, but appending is safer visually.
+            // Actually, serialize() misses disabled fields. Let's fix client_id param manually if needed or rely on hidden.
+            // However, the backend expects 'client_id'.
+            let formData = $(this).serialize();
+
+            // Replace client_id_hidden with client_id if present (or just add client_id manually)
+            const realClientId = $('#servicioClientIdHidden').val();
+            if (realClientId !== undefined) {
+                formData += '&client_id=' + realClientId;
+            } else {
+                // Fallback if hidden is empty (maybe Interacto SA)
+                formData += '&client_id=';
+            }
+
+            const action = $('#servicioId').val() ? 'update' : 'create';
+            $.post('includes/endpoints/servicios.php', formData + '&action=' + action, function (res) {
+                if (res.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Éxito!',
+                        text: res.message,
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    $('#modalServicio').modal('hide');
+                    loadLinkedServices();
+                } else {
+                    Swal.fire('Error', res.message, 'error');
+                }
+            }, 'json');
+        });
+
+        $(document).on('click', '.edit-service', function (e) {
+            e.stopPropagation();
+            const id = $(this).data('id');
+            $.post('includes/endpoints/servicios.php', { action: 'fetch', id: id }, function (res) {
+                if (res.status === 'success') {
+                    const s = res.data;
+                    $('#servicioId').val(s.id);
+                    $('#servicioName').val(s.name);
+                    $('#servicioPath').val(s.path);
+                    $('#servicioDescription').val(s.description || '');
+
+                    // 1. Load Types
+                    $.post('includes/endpoints/maestros.php', { action: 'list_records', table_name: 'mst_tipo_servicio' }, function (tRes) {
+                        if (tRes.status === 'success') {
+                            let opts = '';
+                            tRes.data.forEach(t => {
+                                opts += `<option value="${t.name}">${t.name}</option>`;
+                            });
+                            $('#servicioType').html(opts);
+                            $('#servicioType').val(s.type);
+                        }
+                    }, 'json');
+
+                    // 2. Load Clients (Locked)
+                    $.post('includes/endpoints/servidores.php', { action: 'list_clients' }, function (cRes) {
+                        if (cRes.status === 'success') {
+                            let options = '<option value="">Seleccionar cliente...</option>';
+                            cRes.data.forEach(c => {
+                                options += `<option value="${c.id}">${c.name}</option>`;
+                            });
+                            $('#servicioClientId').html(options);
+                            $('#servicioClientId').val(s.client_id);
+                            $('#servicioClientIdHidden').val(s.client_id);
+
+                            // Re-lock just in case (though static HTML handles it, dynamic loading might reset props if we weren't careful)
+                            $('#servicioClientId').prop('disabled', true);
+                        }
+                    }, 'json');
+
+                    $('#modalServicio').modal('show');
+                }
+            }, 'json');
+        });
+
+        $(document).on('click', '.delete-service', function (e) {
+            e.stopPropagation();
+            const id = $(this).data('id');
+            Swal.fire({
+                title: '¿Eliminar servicio?',
+                text: 'Se eliminarán también todos los detalles técnicos asociados',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.post('includes/endpoints/servicios.php', { action: 'delete', id: id }, function (res) {
+                        if (res.status === 'success') {
+                            Swal.fire('Eliminado', res.message, 'success');
+                            loadLinkedServices();
+                        }
+                    }, 'json');
+                }
+            });
+        });
+
         loadClients();
         loadServerData();
         loadSoftware();
+        loadLinkedServices();
     });
 </script>

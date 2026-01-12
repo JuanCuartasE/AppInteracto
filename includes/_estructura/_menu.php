@@ -27,18 +27,40 @@
                     <span>Servidores</span>
                 </a>
             </li>
-            <li class="<?= ($view === 'servicios' || $view === 'servicio_detalle') ? 'active' : '' ?>">
-                <a href="index.php?view=servicios">
-                    <i class="fas fa-globe"></i>
-                    <span>Servicios</span>
-                </a>
-            </li>
+
 
             <?php if (checkPermission('OWNER')): ?>
                 <li class="<?= ($_GET['view'] ?? '') === 'usuarios' ? 'active' : '' ?>">
                     <a href="index.php?view=usuarios">
                         <i class="fas fa-user-shield"></i>
                         <span>Usuarios</span>
+                    </a>
+                </li>
+            <?php endif; ?>
+
+            <?php if (checkPermission('ADMINISTRATOR') || checkPermission('OWNER')): ?>
+                <li class="<?= ($_GET['view'] ?? '') === 'maestros' ? 'active' : '' ?>">
+                    <a href="index.php?view=maestros">
+                        <i class="fas fa-database"></i>
+                        <span>Maestros</span>
+                    </a>
+                </li>
+                <li class="<?= ($_GET['view'] ?? '') === 'dominios' ? 'active' : '' ?>">
+                    <a href="index.php?view=dominios">
+                        <i class="fas fa-globe"></i>
+                        <span>Dominios</span>
+                    </a>
+                </li>
+                <li class="<?= ($_GET['view'] ?? '') === 'ssl' ? 'active' : '' ?>">
+                    <a href="index.php?view=ssl">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>SSL</span>
+                    </a>
+                </li>
+                <li class="<?= ($_GET['view'] ?? '') === 'cuentas' ? 'active' : '' ?>">
+                    <a href="index.php?view=cuentas">
+                        <i class="fas fa-key"></i>
+                        <span>Cuentas</span>
                     </a>
                 </li>
             <?php endif; ?>

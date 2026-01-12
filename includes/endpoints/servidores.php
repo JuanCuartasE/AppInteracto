@@ -112,6 +112,9 @@ switch ($action) {
         // Auxiliary list for the creation dropdown
         $result = $cnn->query("SELECT id, name FROM clients ORDER BY name ASC");
         $clients = [];
+        // Add default Company owner
+        $clients[] = ['id' => '', 'name' => 'INTERACTO SA'];
+
         while ($row = $result->fetch_assoc()) {
             $clients[] = $row;
         }
